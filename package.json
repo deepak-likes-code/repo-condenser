@@ -19,16 +19,16 @@
     "code",
     "documentation"
   ],
-  "author": "Your Name <your.email@example.com>",
+  "author": "Deepak Komma",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/repo-condenser.git"
+    "url": "https://github.com/deepak-likes-code/repo-condenser.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/repo-condenser/issues"
+    "url": "https://github.com/deepak-likes-code/repo-condenser/issues"
   },
-  "homepage": "https://github.com/yourusername/repo-condenser#readme",
+  "homepage": "https://github.com/deepak-likes-code/repo-condenser#readme",
   "devDependencies": {
     "@types/node": "^14.14.31",
     "typescript": "^4.2.3"

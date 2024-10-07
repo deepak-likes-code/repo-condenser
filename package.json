@@ -1,0 +1,39 @@
+{
+  "name": "repo-condenser",
+  "version": "1.0.0",
+  "description": "A package that condenses repository contents into a single markdown file",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "repo-condenser": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "condense": "node -e \"require('./dist/index.js').condenseRepo()\""
+  },
+  "keywords": [
+    "repository",
+    "condense",
+    "markdown",
+    "code",
+    "documentation"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/repo-condenser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/repo-condenser/issues"
+  },
+  "homepage": "https://github.com/yourusername/repo-condenser#readme",
+  "devDependencies": {
+    "@types/node": "^14.14.31",
+    "typescript": "^4.2.3"
+  },
+  "dependencies": {
+    "ignore": "^5.1.8"
+  }
+}

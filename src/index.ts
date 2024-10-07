@@ -6,6 +6,32 @@ interface CondenseConfig {
     ignoreFolders: string[];
 }
 
+
+const binaryExtensions = new Set([
+    '.zip', '.gz', '.tar',
+    '.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.ico', '.svg',
+    '.pdf', '.doc', '.docx', '.ppt', '.pptx', '.xls', '.xlsx',
+    '.exe', '.dll', '.so', '.dylib',
+    '.mp3', '.mp4', '.avi', '.mov', '.mkv',
+    '.ttf', '.otf', '.woff', '.woff2'
+]);
+
+function isBinaryPath(filePath: string): boolean {
+    const ext = path.extname(filePath).toLowerCase();
+    return binaryExtensions.has(ext);
+}
+
+async function isTextFile(filePath: string): Promise<boolean> {
+    try {
+        const buffer = await fs.readFile(filePath);
+        const textDecoder = new TextDecoder('utf-8');
+        textDecoder.decode(buffer);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
 async function readCondenseConfig(): Promise<CondenseConfig> {
     const configPath = path.join(process.cwd(), 'condense.config.json');
     try {
@@ -42,18 +68,21 @@ async function processDirectory(dir: string, output: string[], ignoreRules: stri
         const filePath = path.join(dir, file.name);
         const relativePath = path.relative(process.cwd(), filePath);
 
-        if (isHidden(filePath) || shouldIgnore(relativePath, ignoreRules)) {
+        if (isHidden(filePath) || shouldIgnore(relativePath, ignoreRules) || isBinaryPath(filePath)) {
             continue;
         }
 
         if (file.isDirectory()) {
             await processDirectory(filePath, output, ignoreRules);
         } else if (file.isFile()) {
-            const content = await fs.readFile(filePath, 'utf-8');
-            output.push(`# ${relativePath}\n\n\`\`\`\n${content}\n\`\`\`\n\n---\n`);
+            if (await isTextFile(filePath)) {
+                const content = await fs.readFile(filePath, 'utf-8');
+                output.push(`# ${relativePath}\n\n\`\`\`\n${content}\n\`\`\`\n\n---\n`);
+            }
         }
     }
 }
+
 
 async function condenseRepo(): Promise<void> {
     const config = await readCondenseConfig();
